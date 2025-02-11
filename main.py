@@ -5,7 +5,6 @@ import random
 from pygame.locals import *
 from PIL import Image
 
-# Définition de la classe Particle
 class Particle:
     def __init__(self, x, y, color):
         self.x = x
@@ -14,28 +13,21 @@ class Particle:
         speed = random.uniform(2, 5)
         self.dx = math.cos(angle) * speed
         self.dy = math.sin(angle) * speed
-        self.color = color  # Couleur de la particule
+        self.color = color
         self.radius = random.randint(2, 4)
         self.life = self.initial_life = random.randint(20, 40)
-
-        # Créer une surface pour la particule avec per-pixel alpha
         self.surface = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
-        # Dessiner le cercle sur la surface avec transparence
-        alpha = 128  # Opacité (0-255)
+        alpha = 128
         pygame.draw.circle(self.surface, self.color + (alpha,), (self.radius, self.radius), self.radius)
-    
     def update(self):
         self.x += self.dx
         self.y += self.dy
-        self.dy += 0.1  # Gravité
+        self.dy += 0.1
         self.life -= 1
 
     def draw(self, surface):
         if self.life > 0:
-            # Blitter la surface de la particule sur l'écran
             surface.blit(self.surface, (int(self.x - self.radius), int(self.y - self.radius)))
-
-# Définition de la classe GrowingCircle
 class GrowingCircle:
     def __init__(self, x, y, initial_radius, color):
         self.x = x
@@ -48,43 +40,33 @@ class GrowingCircle:
         self.max_radius = 500  # Rayon maximal
 
     def update(self):
-        # Augmenter le rayon
         self.radius += self.growth_rate
-        # Diminuer l'opacité
         self.alpha -= self.fade_rate
         if self.alpha < 0:
             self.alpha = 0
 
     def draw(self, surface):
         if self.alpha > 0:
-            # Créer une surface temporaire avec per-pixel alpha
             temp_surface = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
-            # Dessiner le cercle vide sur la surface temporaire
             pygame.draw.circle(temp_surface, self.color + (int(self.alpha),), (int(self.radius), int(self.radius)), int(self.radius), 5)
-            # Blitter la surface temporaire sur l'écran
             surface.blit(temp_surface, (int(self.x - self.radius), int(self.y - self.radius)))
 
-# Définition de la classe AnimatedGIF
 class AnimatedGIF:
     def __init__(self, filepath):
         self.frames = []
-        self.frame_durations = []  # Durées de chaque frame en millisecondes
+        self.frame_durations = []
         self.load_gif(filepath)
         self.current_frame_index = 0
-        self.accumulator = 0  # Accumulateur de temps pour changer de frame
+        self.accumulator = 0
 
     def load_gif(self, filepath):
-        # Ouvrir le GIF avec PIL
         pil_image = Image.open(filepath)
-        # Parcourir toutes les frames
         frame_count = 0
         try:
             while True:
-                # Convertir la frame actuelle en mode RGBA
                 pil_frame = pil_image.convert('RGBA')
-                frame_duration = pil_image.info.get('duration', 100)  # Durée par défaut de 100 ms
+                frame_duration = pil_image.info.get('duration', 100)
                 self.frame_durations.append(frame_duration)
-                # Convertir la frame en surface Pygame
                 data = pil_frame.tobytes()
                 size = pil_frame.size
                 mode = pil_frame.mode
@@ -93,20 +75,18 @@ class AnimatedGIF:
                 frame_count += 1
                 pil_image.seek(pil_image.tell() + 1)
         except EOFError:
-            pass  # Fin des frames
+            pass
         print(f"Chargement de {frame_count} frames du GIF.")
 
     def update(self, dt):
-        # Mettre à jour l'index de la frame en fonction du temps écoulé
         if len(self.frames) > 1:
-            self.accumulator += dt * 1000  # Convertir dt en millisecondes
+            self.accumulator += dt * 1000
             frame_duration = self.frame_durations[self.current_frame_index]
             while self.accumulator >= frame_duration:
                 self.accumulator -= frame_duration
                 self.current_frame_index = (self.current_frame_index + 1) % len(self.frames)
 
     def reset(self):
-        # Réinitialiser l'animation
         self.current_frame_index = 0
         self.accumulator = 0
 
@@ -120,20 +100,15 @@ def main():
     pygame.display.set_caption("Animation GIF avec Pygame")
     font = pygame.font.SysFont('Arial', 24)
 
-    # Charger le son
     sound = pygame.mixer.Sound("./assets/alicante.wav")
 
-    # Créer un canal spécifique pour le son
-    sound_channel = pygame.mixer.Channel(0)  # Utiliser le canal 0 pour notre son
+    sound_channel = pygame.mixer.Channel(0)
 
-    # Charger le GIF animé
     gif_path = "./assets/cat-dancing.gif"
     animated_gif = AnimatedGIF(gif_path)
 
-    # Obtenir les dimensions du GIF
     gif_width, gif_height = animated_gif.frames[0].get_size()
 
-    # Positionnement du GIF au centre
     len_screen, height_screen = screen.get_size()
     x = (len_screen - gif_width) // 2
     y = (height_screen - gif_height) // 2 - 100
@@ -142,10 +117,10 @@ def main():
     center_y = y + gif_height // 2
 
     padding = 200
-    rayon_standard = max(gif_width, gif_height) // 2 + padding  # Rayon standard du cercle
-    rayon_courant = rayon_standard  # Rayon utilisé pour le dessin du cercle
+    rayon_standard = max(gif_width, gif_height) // 2 + padding
+    rayon_courant = rayon_standard
 
-    # Liste des couleurs prédéfinies
+
     predefined_colors = [
         (255, 0, 0),    # Rouge
         (0, 255, 0),    # Vert
@@ -159,9 +134,8 @@ def main():
 
     # Couleur initiale (violet)
     color = (128, 0, 128)
-    previous_color = color  # Initialiser la couleur précédente
+    previous_color = color
 
-    # Initialisation de la boule
     ball = {
         'x': len_screen // 2 - 100,
         'y': height_screen // 2 - 250,
@@ -171,46 +145,34 @@ def main():
         'color': color,
     }
 
-    # Couleur du cercle
+
     color_circle = color
 
-    # Gravité
     gravity = 0.1
-    # Coefficient de restitution
     restitution = 1
-    # Incrémentation du rayon de la boule par collision
     radius_plus = 2.5
 
-    # Timer pour l'agrandissement du cercle
-    circle_pulse_timer = 0  # Nombre de frames restantes pour le cercle agrandi
+    circle_pulse_timer = 0
 
-    # Liste des particules
     particles = []
-    # Liste des cercles qui grandissent
     growing_circles = []
 
-    # Indicateur pour savoir si le GIF est en cours de lecture
     gif_playing = False
 
-    # Variable pour stocker le temps de la dernière collision
     collision_time = None
 
     simulation_started = False
 
-    # Création du background
     background = pygame.Surface(screen.get_size())
     background.fill((0, 0, 0))  # Fond noir
 
-    # Boucle d'événements
     loop = True
     clock = pygame.time.Clock()
     while loop:
-        dt = clock.tick(60) / 1000  # Temps écoulé depuis la dernière frame en secondes
+        dt = clock.tick(60) / 1000
 
-        # Obtenir le temps actuel
         current_time = pygame.time.get_ticks()
 
-        # Gestion des événements
         for event in pygame.event.get():
             if event.type == QUIT:
                 loop = False
@@ -222,25 +184,20 @@ def main():
                 elif event.key == pygame.K_DOWN:
                     gravity = max(0, gravity - 0.05)
                 elif event.key == pygame.K_SPACE:
-                    simulation_started = True  # Démarrer la simulation
+                    simulation_started = True
 
-        # Blitting du background
         screen.blit(background, (0, 0))
 
         if simulation_started:
-            # Mise à jour de la vitesse verticale avec la gravité
             ball['dy'] += gravity
 
-            # Mise à jour de la position de la boule
             ball['x'] += ball['dx']
             ball['y'] += ball['dy']
 
-            # Calcul de la distance entre la boule et le centre du cercle
             dx = ball['x'] - center_x
             dy = ball['y'] - center_y
             distance = math.hypot(dx, dy)
 
-            # Détection de collision avec les bords intérieurs du cercle
             collision_occurred = False
             if distance + ball['radius'] >= rayon_standard:
                 collision_occurred = True
@@ -261,107 +218,86 @@ def main():
                 ball['dx'] *= restitution
                 ball['dy'] *= restitution
 
-                # Repositionner la boule juste à l'intérieur du cercle
                 ball['x'] = center_x + nx * (rayon_standard - ball['radius'])
                 ball['y'] = center_y + ny * (rayon_standard - ball['radius'])
 
-                # Démarrer le timer pour l'agrandissement du cercle
-                circle_pulse_timer = 5  # Le cercle restera agrandi pendant 5 frames
+                circle_pulse_timer = 5
 
-                # Conserver la couleur précédente
                 previous_color = color
 
-                # Générer des particules avec la couleur précédente
-                for _ in range(20):  # Nombre de particules à générer
+                for _ in range(20):
                     particle = Particle(ball['x'], ball['y'], previous_color)
                     particles.append(particle)
 
-                # Ajouter un nouveau cercle qui grandit avec la couleur précédente
                 growing_circle = GrowingCircle(center_x, center_y, rayon_courant, color_circle)
                 growing_circles.append(growing_circle)
 
-                # Choisir une nouvelle couleur différente de la précédente
                 while True:
                     new_color = random.choice(predefined_colors)
                     if new_color != previous_color:
                         color = new_color
                         break
 
-                # Appliquer la nouvelle couleur à la boule et au cercle
                 ball['color'] = color
                 color_circle = color
 
-                # Enregistrer le temps de la collision
                 collision_time = current_time
 
-                # Contrôle du GIF et du son en fonction des collisions
                 if not sound_channel.get_busy():
                     sound_channel.play(sound)
-                    animated_gif.reset()  # Réinitialiser le GIF
+                    animated_gif.reset()
                     gif_playing = True
                 else:
-                    # Si le son est déjà en train de jouer, ne rien faire
                     pass
 
-            # Vérifier si le son doit être arrêté
             if collision_time is not None:
                 elapsed_time = current_time - collision_time
-                if elapsed_time >= 1000:  # 1000 millisecondes = 1 seconde
+                if elapsed_time >= 1000:
                     if gif_playing:
                         gif_playing = False
                         sound_channel.stop()
-                    collision_time = None  # Réinitialiser le temps de collision
+                    collision_time = None
 
-            # Gestion de l'agrandissement temporaire du cercle
-            # Réinitialiser le rayon courant du cercle
+
             rayon_courant = rayon_standard
 
-            # Si le timer est actif, agrandir le cercle
             if circle_pulse_timer > 0:
                 rayon_courant = rayon_standard + 15
                 circle_pulse_timer -= 1
 
-            # Mettre à jour et dessiner les cercles qui grandissent
             for gc in growing_circles[:]:
                 gc.update()
                 gc.draw(screen)
-                # Supprimer le cercle s'il est complètement transparent ou a atteint le rayon maximal
                 if gc.alpha == 0 or gc.radius >= gc.max_radius:
                     growing_circles.remove(gc)
 
-            # Dessin du cercle principal vide autour du GIF
-            sizeof_circ = 5  # Épaisseur du contour
+            sizeof_circ = 5
             pygame.draw.circle(screen, color_circle, (center_x, center_y), rayon_courant, sizeof_circ)
 
-            # Dessin de la boule
+
             pygame.draw.circle(screen, ball['color'], (int(ball['x']), int(ball['y'])), int(ball['radius']))
             
-            # Mise à jour et affichage du GIF animé
+
             if gif_playing:
                 animated_gif.update(dt)
                 animated_gif.draw(screen, (x, y))
             else:
-                # Afficher la première frame si le GIF n'est pas en lecture
                 screen.blit(animated_gif.frames[0], (x, y))
 
-            # Mettre à jour et dessiner les particules
             for particle in particles[:]:
                 particle.update()
                 particle.draw(screen)
                 if particle.life <= 0:
                     particles.remove(particle)
 
-            # Afficher le temps à l'écran (optionnel)
             time_text = font.render(f"time : {current_time/1000:.2f}", True, (255, 255, 255))
             screen.blit(time_text, (10, 10))
 
         else:
-            # Simulation en pause, afficher un message
             pause_text = font.render("Appuyez sur Espace pour démarrer la simulation", True, (255, 255, 255))
             text_rect = pause_text.get_rect(center=(len_screen // 2, height_screen // 2))
             screen.blit(pause_text, text_rect)
 
-        # Mise à jour de l'affichage
         pygame.display.flip()
 
     pygame.quit()
