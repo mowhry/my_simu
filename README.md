@@ -8,13 +8,13 @@ A fun and interactive project developed with Python and Pygame, featuring **boun
 
 ## 📖 Table of Contents
 
-1. [About the Project 🚀](#about-the-project)
-2. [Features ✨](#features)
-3. [Prerequisites 📋](#prerequisites)
-4. [Installation & Setup 💻](#installation--setup)
-5. [Usage 🎮](#usage)
-6. [Learning Outcomes 📚](#learning-outcomes)
-7. [License ⚖️](#license)
+1. [About the Project 🚀](#-about-the-project)
+2. [Features ✨](#-features)
+3. [Prerequisites 📋](#-prerequisites)
+4. [Installation & Setup 💻](#-installation--setup)
+5. [Usage 🎮](#-usage)
+6. [Learning Outcomes 📚](#-learning-outcomes)
+7. [License ⚖️](#-license)
 
 
 ## 🚀 About the Project
