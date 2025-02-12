@@ -3,6 +3,9 @@
 
 A fun and interactive project developed with Python and Pygame, featuring **bouncing balls**, **particle effects**, **animated GIFs**, and **sound effects**. This simulation offers a dynamic visual and audio experience, perfect for exploring the fundamentals of game and graphical effects development in Python.
 
+## Exemple
+![exemple](assets/readme_exemple.gif)
+
 ## 📖 Table of Contents
 1. [About the Project 🚀](#-about-the-project-)
 2. [Features ✨](#-features-)

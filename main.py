@@ -100,11 +100,11 @@ def main():
     pygame.display.set_caption("Animation GIF avec Pygame")
     font = pygame.font.SysFont('Arial', 24)
 
-    sound = pygame.mixer.Sound("./assets/alicante.wav")
+    sound = pygame.mixer.Sound("./assets/alicante.wav") ## PUT YOUR MUSIC HERE
 
     sound_channel = pygame.mixer.Channel(0)
 
-    gif_path = "./assets/cat-dancing.gif"
+    gif_path = "./assets/cat-dancing.gif" ## PUT YOUR GIF HERE
     animated_gif = AnimatedGIF(gif_path)
 
     gif_width, gif_height = animated_gif.frames[0].get_size()
