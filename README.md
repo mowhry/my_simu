@@ -7,14 +7,14 @@ A fun and interactive project developed with Python and Pygame, featuring **boun
 ![exemple](assets/readme_exemple.gif)
 
 ## 📖 Table of Contents
-1. [About the Project 🚀](#-about-the-project-)
-2. [Features ✨](#-features-)
-3. [Prerequisites 📋](#-prerequisites-)
-4. [Installation & Setup 💻](#-installation--setup-)
-5. [Usage 🎮](#-usage-)
-6. [Learning Outcomes 📚](#-learning-outcomes-)
-7. [License ⚖️](#-license-)
-## 🚀 About the Project
+1. [About the Project 🚀](#about-the-project)
+2. [Features ✨](#features)
+3. [Prerequisites 📋](#prerequisites)
+4. [Installation & Setup 💻](#installation--setup)
+5. [Usage 🎮](#usage)
+6. [Learning Outcomes 📚](#learning-outcomes)
+7. [License ⚖️](#license)
+## 🚀 About the Project<a name="#-about-the-project"></a>
 
 This project simulates a bouncing ball within a circular boundary, enhanced by **particle effects**, **expanding circles**, and an **animated GIF**. When the ball collides with the boundary, a **sound effect** is triggered, synchronized with the animation. Users can **adjust gravity** and **start** or **stop** the simulation using simple keyboard inputs.
 ## ✨ Features
@@ -64,5 +64,5 @@ By developing this project, I was able to:
 - **Audio Handling in Python:** Manage and play sound effects using Pygame's mixer.
 - **Integrate Animated GIFs:** Use Pillow (PIL) to handle image animations within Pygame.
 - **Experiment with Physics:** Implement gravity, collision detection, and restitution.
-## ⚖️ License
+## ⚖️ License<a name="#-license"></a>
 This project is licensed under the MIT License. You are free to use, modify, and distribute it under the terms of the license.
